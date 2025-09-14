@@ -5,7 +5,10 @@ echo "👉 Running Terraform pre-push checks..."
 
 # Initialize backend (safe if already done)
 terraform init -backend=false -input=false -upgrade
-
+if [ $? -ne 0 ]; then
+  echo "❌ Terraform init failed."
+  exit 1
+fi
 # Show plan to ensure no surprises
 terraform plan -input=false -lock=false -detailed-exitcode
 status=$?
