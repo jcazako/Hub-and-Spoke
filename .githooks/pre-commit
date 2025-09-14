@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+echo "👉 Running Terraform pre-commit checks..."
+
+# Check formatting
+terraform fmt -check -recursive
+if [ $? -ne 0 ]; then
+  echo "❌ Terraform files not formatted. Run 'terraform fmt -recursive'."
+  exit 1
+fi
+
+# Validate configs
+terraform validate
+if [ $? -ne 0 ]; then
+  echo "❌ Terraform validation failed."
+  exit 1
+fi
+
+# Run linter if installed
+if command -v tflint >/dev/null 2>&1; then
+  tflint
+fi
+
+echo "✅ Pre-commit checks passed."

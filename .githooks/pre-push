@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+echo "👉 Running Terraform pre-push checks..."
+
+# Initialize backend (safe if already done)
+terraform init -backend=false -input=false -upgrade
+
+# Show plan to ensure no surprises
+terraform plan -input=false -lock=false -detailed-exitcode
+status=$?
+
+if [ $status -eq 1 ]; then
+  echo "❌ Terraform plan failed."
+  exit 1
+elif [ $status -eq 2 ]; then
+  echo "⚠️  Terraform plan found changes. Review before pushing."
+  exit 1
+fi
+
+echo "✅ Pre-push checks passed (no changes detected)."
