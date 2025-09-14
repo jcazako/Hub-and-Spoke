@@ -29,3 +29,16 @@ variable "tags" {
   }
   description = "A map of tags to assign to resources."
 }
+
+# Spoke VPC CIDRs
+variable "spokes" {
+  description = "Map of spoke VPCs and their CIDRs"
+  type = map(object({
+    cidr = string
+  }))
+  default = {
+    vpc-a = { cidr = "10.0.0.0/16" }
+    vpc-b = { cidr = "10.1.0.0/16" }
+    vpc-c = { cidr = "10.2.0.0/16" }
+  }
+}
