@@ -1,13 +1,15 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-echo "👉 Running ToFu pre-commit checks..."
+echo "👉 Running Tofu pre-commit checks..."
 
 # Check formatting
 tofu fmt -check -recursive
 if [ $? -ne 0 ]; then
-  echo "❌ ToFu files not formatted. Run 'tofu fmt -recursive'."
+  echo "❌ Tofu files not formatted. Run 'tofu fmt -recursive'."
   exit 1
+else
+  echo "✅ Tofu files formatted."
 fi
 
 # Validate configs
@@ -15,6 +17,16 @@ tofu validate
 if [ $? -ne 0 ]; then
   echo "❌ Tofu validation failed."
   exit 1
+else
+  echo "✅ Tofu validation passed."
+fi
+
+tofu test
+if [ $? -ne 0 ]; then
+  echo "❌ Tofu tests failed."
+  exit 1
+else
+  echo "✅ Tofu tests passed."
 fi
 
 echo "✅ Pre-commit checks passed."

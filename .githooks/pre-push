@@ -11,6 +11,32 @@ else
   exit 1
 fi
 
+# Check formatting
+tofu fmt -check -recursive
+if [ $? -ne 0 ]; then
+  echo "❌ Tofu files not formatted. Run 'tofu fmt -recursive'."
+  exit 1
+else
+  echo "✅ Tofu files formatted."
+fi
+
+# Validate configs
+tofu validate
+if [ $? -ne 0 ]; then
+  echo "❌ Tofu validation failed."
+  exit 1
+else
+  echo "✅ Tofu validation passed."
+fi
+
+tofu test
+if [ $? -ne 0 ]; then
+  echo "❌ Tofu tests failed."
+  exit 1
+else
+  echo "✅ Tofu tests passed."
+fi
+
 # plan with detailed exit codes
 if terraform plan -input=false -lock=false -detailed-exitcode; then
   status=0
