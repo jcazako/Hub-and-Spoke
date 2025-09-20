@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "👉 Running Terraform pre-push checks..."
+echo "👉 Running Tofu pre-push checks..."
 
 # init (optional explicit handling just for nicer message)
-if terraform init -backend=false -input=false -upgrade; then
+if tofu init -backend=false -input=false -upgrade; then
   :
 else
-  echo "❌ Terraform init failed."
+  echo "❌ Tofu init failed."
   exit 1
 fi
 
@@ -38,7 +38,7 @@ else
 fi
 
 # plan with detailed exit codes
-if terraform plan -input=false -lock=false -detailed-exitcode; then
+if tofu plan -input=false -lock=false -detailed-exitcode; then
   status=0
 else
   status=$?   # will be 1 (error) or 2 (changes)
@@ -49,10 +49,10 @@ case "$status" in
     echo "✅ Pre-push checks passed (no changes detected)."
     ;;
   1)
-    echo "❌ Terraform plan failed."
+    echo "❌ Tofu plan failed."
     exit 1
     ;;
   2)
-    echo "⚠️  Terraform plan found changes. Pushing anyway."
+    echo "⚠️  Tofu plan found changes. Pushing anyway."
     ;;
 esac
