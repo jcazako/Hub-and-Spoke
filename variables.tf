@@ -16,7 +16,6 @@ variable "azs" {
 
 variable "account_id" {
   type        = string
-  default     = "111122223333"
   description = "AWS Account ID"
 }
 
