@@ -1,19 +1,19 @@
 #!/bin/bash
 set -e
 
-echo "👉 Running Terraform pre-commit checks..."
+echo "👉 Running ToFu pre-commit checks..."
 
 # Check formatting
-terraform fmt -check -recursive
+tofu fmt -check -recursive
 if [ $? -ne 0 ]; then
-  echo "❌ Terraform files not formatted. Run 'terraform fmt -recursive'."
+  echo "❌ ToFu files not formatted. Run 'tofu fmt -recursive'."
   exit 1
 fi
 
 # Validate configs
-terraform validate
+tofu validate
 if [ $? -ne 0 ]; then
-  echo "❌ Terraform validation failed."
+  echo "❌ Tofu validation failed."
   exit 1
 fi
 

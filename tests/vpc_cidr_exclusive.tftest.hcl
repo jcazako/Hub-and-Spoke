@@ -12,8 +12,8 @@ run "vpc_cidrs_are_exclusive" {
     condition = alltrue(flatten([
       for i in range(length(output.vpc_attributes)) : [
         for j in range(i + 1, length(output.vpc_attributes)) :
-          (!cidrcontains(output.vpc_attributes[i].vpc_cidr, output.vpc_attributes[j].vpc_cidr)) &&
-          (!cidrcontains(output.vpc_attributes[j].vpc_cidr, output.vpc_attributes[i].vpc_cidr))
+        (!cidrcontains(output.vpc_attributes[i].vpc_cidr, output.vpc_attributes[j].vpc_cidr)) &&
+        (!cidrcontains(output.vpc_attributes[j].vpc_cidr, output.vpc_attributes[i].vpc_cidr))
       ]
     ]))
     error_message = "Overlapping VPC CIDRs detected: ${jsonencode(output.vpc_attributes)}"
